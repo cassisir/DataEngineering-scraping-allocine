@@ -4,22 +4,47 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movies</title>
+    <title>Movies scraped from Allocine</title>
+    <style>
+        .movie-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .movie-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            max-width: 200px;  /* Set the maximum width of the card */
+            overflow: hidden; /* Hide overflow content */
+            text-align: center;
+        }
+
+        .movie-image {
+            max-width: 100%; /* Set the maximum width of the image to the container width */
+            height: auto;    /* Maintain the image aspect ratio */
+        }
+
+        .movie-title {
+            font-size: 16px;
+            white-space: nowrap; /* Prevent text wrapping */
+            overflow: hidden;    /* Hide overflow text */
+            text-overflow: ellipsis; /* Display ellipsis (...) for overflow text */
+        }
+    </style>
 </head>
 <body>
     <h1>Movies</h1>
-    <ul>
+    <div class="movie-container">
         {% for movie in movies %}
-            <li>
-                <h2>{{ movie.title }}</h2>
-                <img src="{{ movie.image }}" alt="{{ movie.title }} image">
-                <p><strong>Synopsis:</strong> {{ movie.synopsis }}</p>
-                <p><strong>Genre:</strong> {{ movie.genre }}</p>
-                <p><strong>Date:</strong> {{ movie.date }}</p>
-                <p><strong>Ratings:</strong> {{ movie.ratings }}</p>
-                <p><strong>Cast:</strong> {{ movie.cast }}</p>
-            </li>
+            <a href="{{ url_for('movie', title=movie['title']) }}">
+                <div class="movie-card">
+                    <img src="{{ movie['image'] }}" alt="{{ movie['title'] }}" class="movie-image">
+                    <h3 class="movie-title">{{ movie['title'] }}</h3>
+                </div>
+            </a>
         {% endfor %}
-    </ul>
+    </div>
 </body>
 </html>
