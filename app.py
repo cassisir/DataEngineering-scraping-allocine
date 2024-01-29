@@ -3,7 +3,7 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
-# Connect to MongoDB
+# Connexion à MongoDB
 client = MongoClient("mongodb://localhost:27017/")
 db = client.allocine
 collection = db.movie_collection
@@ -30,10 +30,21 @@ def index():
     all_genres = list(collection.distinct('genre'))
     return render_template('index.html', movies=movies, all_genres=all_genres, selected_genre=selected_genre, selected_sort_by=sort_by, selected_order=sort_order, exclude_not_rated=exclude_not_rated)
 
+
 @app.route('/movie/<title>')
 def movie(title):
     movie = collection.find_one({'title': title})
     return render_template('movie.html', movie=movie)
+
+
+@app.route('/graphs')
+def graphs():
+    # You can add logic here to fetch data for your graphs from MongoDB
+    # For simplicity, let's pass some sample data
+    sample_data = {'genres': ['Action', 'Comedy', 'Drama'],
+                   'count': [15, 20, 25]}
+
+    return render_template('graphs.html', data=sample_data)
 
 
 def get_genre_filter(request):
