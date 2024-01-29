@@ -36,7 +36,7 @@
 </head>
 <body>
     <h1>Movies</h1>
-
+    <a href="{{ url_for('graphs') }}">View Graphs</a>
     <form method="GET" action="{{ url_for('index') }}">
         <label for="genre-filter">Filter by Genre:</label>
         <select id="genre-filter" name="genre">

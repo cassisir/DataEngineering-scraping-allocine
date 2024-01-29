@@ -39,8 +39,6 @@ def movie(title):
 
 @app.route('/graphs')
 def graphs():
-    # You can add logic here to fetch data for your graphs from MongoDB
-    # For simplicity, let's pass some sample data
     sample_data = {'genres': ['Action', 'Comedy', 'Drama'],
                    'count': [15, 20, 25]}
 
