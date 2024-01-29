@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+</head>
+<body>
+    <h1>Movies</h1>
+    <ul>
+        {% for movie in movies %}
+            <li>
+                <h2>{{ movie.title }}</h2>
+                <img src="{{ movie.image }}" alt="{{ movie.title }} image">
+                <p><strong>Synopsis:</strong> {{ movie.synopsis }}</p>
+                <p><strong>Genre:</strong> {{ movie.genre }}</p>
+                <p><strong>Date:</strong> {{ movie.date }}</p>
+                <p><strong>Ratings:</strong> {{ movie.ratings }}</p>
+                <p><strong>Cast:</strong> {{ movie.cast }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
