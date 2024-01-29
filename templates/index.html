@@ -38,6 +38,8 @@
     <h1>Movies</h1>
     <a href="{{ url_for('graphs') }}">View Graphs</a>
     <form method="GET" action="{{ url_for('index') }}">
+        <label for="search-query">Search:</label>
+        <input type="text" id="search-query" name="search_query" placeholder="Title or Cast member">
         <label for="genre-filter">Filter by Genre:</label>
         <select id="genre-filter" name="genre">
             <option value="" {% if not selected_genre %}selected{% endif %}>All Genres</option>
@@ -50,6 +52,7 @@
         <select id="sort-by" name="sort_by">
             <option value="press_rating" {% if selected_sort_by == 'press_rating' %}selected{% endif %}>Press Rating</option>
             <option value="spectators_rating" {% if selected_sort_by == 'spectators_rating' %}selected{% endif %}>Spectators Rating</option>
+            <option value="date" {% if selected_sort_by == 'date' %}selected{% endif %}>Date</option>
         </select>
         <select id="sort-order" name="sort_order">
             <option value="descending" {% if selected_order == 'descending' %}selected{% endif %}>Descending</option>

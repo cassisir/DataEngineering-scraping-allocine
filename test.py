@@ -29,24 +29,39 @@ plt.tight_layout()
 # Save the plot as an image (PNG format)
 plt.savefig('movies_per_genre.png')
 
-# Aggregate the mean press ratings per genre
-pipeline = [
-    {"$match": {"ratings.press": {"$exists": True, "$ne": "--"}}},  # Filter out movies without press ratings
+
+
+plt.figure()
+## PRESS ##
+mean_press_ratings = [
+    {"$match": {"ratings.press": {"$exists": True, "$ne": "not rated"}}},  # Filter out movies without press ratings
     {"$unwind": "$genre"},
     {"$group": {"_id": "$genre", "mean_press_rating": {"$avg": {"$toDouble": "$ratings.press"}}}}
 ]
-
-result = list(collection.aggregate(pipeline))
+result = list(collection.aggregate(mean_press_ratings))
 
 # Extract genre names and corresponding mean press ratings
 genres = [entry["_id"] for entry in result]
 mean_press_ratings = [entry["mean_press_rating"] for entry in result]
 
+## SPECTATORS ##
+mean_spectators_ratings = [
+    {"$match": {"ratings.spectators": {"$exists": True, "$ne": "not rated"}}},  # Filter out movies without press ratings
+    {"$unwind": "$genre"},
+    {"$group": {"_id": "$genre", "mean_spectators_ratings": {"$avg": {"$toDouble": "$ratings.spectators"}}}}
+]
+result = list(collection.aggregate(mean_spectators_ratings))
+
+# Extract genre names and corresponding mean press ratings
+genres = [entry["_id"] for entry in result]
+mean_spectators_ratings = [entry["mean_spectators_ratings"] for entry in result]
+
 # Plot the bar graph
 plt.bar(genres, mean_press_ratings, color='green')
+plt.bar(genres, mean_spectators_ratings, color='blue')
 plt.xlabel('Genre')
-plt.ylabel('Mean Press Rating')
-plt.title('Mean Press Rating per Genre')
+plt.ylabel('Mean Rating')
+plt.title('Mean Rating per Genre')
 
 # Rotate the x-axis labels to 90 degrees
 plt.xticks(rotation=90, ha='center')  # ha='center' centers the labels on the ticks
@@ -54,4 +69,4 @@ plt.xticks(rotation=90, ha='center')  # ha='center' centers the labels on the ti
 plt.tight_layout()
 
 # Save the plot as an image (PNG format)
-plt.savefig('mean_press_ratings_per_genre.png')
+plt.savefig('mean_ratings_per_genre.png')

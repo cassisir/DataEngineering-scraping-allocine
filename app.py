@@ -13,8 +13,13 @@ def index():
     # Filtre de genre
     selected_genre = get_genre_filter(request)
     # Filtre de tri
-    sort_by = request.args.get('sort_by', 'press_rating')
-    sort_field = 'ratings.press' if sort_by == 'press_rating' else 'ratings.spectators'
+    sort_by = request.args.get('sort_by', 'date')
+    if sort_by == 'press_rating':
+        sort_field = 'ratings.press'
+    elif sort_by == 'spectators_rating':
+        sort_field = 'ratings.spectators'
+    else:
+        sort_field = 'date'
     # Ordre du tri
     sort_order = request.args.get('sort_order', 'descending')
     order = 1 if sort_order == 'ascending' else -1
@@ -23,6 +28,15 @@ def index():
     query = selected_genre
     if exclude_not_rated:
         query[sort_field] = {'$ne': 'not rated'} # Ajoute la condition pour ne conserver que les films notés
+
+
+    # Recherche par nom de film ou de membre du casting
+    search_query = request.args.get('search_query', '').strip()
+    if search_query:
+        query['$or'] = [
+            {'title': {'$regex': f'{search_query}', '$options': 'i'}},
+            {'cast.name': {'$regex': f'{search_query}', '$options': 'i'}}
+        ]
 
     # Sélection des films
     movies = list(collection.find(selected_genre).sort(sort_field, order))
@@ -39,10 +53,8 @@ def movie(title):
 
 @app.route('/graphs')
 def graphs():
-    sample_data = {'genres': ['Action', 'Comedy', 'Drama'],
-                   'count': [15, 20, 25]}
 
-    return render_template('graphs.html', data=sample_data)
+    return render_template('graphs.html')
 
 
 def get_genre_filter(request):
