@@ -35,7 +35,7 @@
     </style>
 </head>
 <body>
-    <h1>Movies</h1>
+    <h1>Movies scraped from Allocine</h1>
     <div class="movie-container">
         {% for movie in movies %}
             <a href="{{ url_for('movie', title=movie['title']) }}">

@@ -9,7 +9,19 @@
 <body>
     <h1>{{ movie['title'] }}</h1>
     <img src="{{ movie['image'] }}" alt="{{ movie['title'] }}" style="max-width: 300px;">
-    <p>{{ movie['synopsis'][0] }}</p>
-    <a href="{{ url_for('index') }}">Back to Movies</a>
+    <p><strong>Genres:</strong> {{ ', '.join(movie['genre']) }}</p>
+    <p><strong>Date:</strong> {{ movie['date'].strftime('%d-%B-%Y') }}</p>
+    <p><strong>Press Rating:</strong> {{ movie['ratings']['press'] }}</p>
+    <p><strong>Spectators Rating:</strong> {{ movie['ratings']['spectators'] }}</p>
+    <p><strong>Synopsis:</strong> {{ ' '.join(movie['synopsis']) }}</p>
+
+    <h2>Cast:</h2>
+    <ul>
+        {% for actor in movie['cast'] %}
+            <li>{{ actor['name'] }} - {{ ', '.join(actor['role']) }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('index') }}">Retour aux films</a>
 </body>
 </html>
