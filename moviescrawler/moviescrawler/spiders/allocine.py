@@ -48,13 +48,13 @@ class AllocineSpider(scrapy.Spider):
         cast = []
         sections = response.css('.gd-col-left .section')
         for section in sections:
-            title_section = section.css('.titlebar ::text').get() 
-            cast_section = []
+            title_section = section.css('.titlebar ::text').get()
             cards = section.css('.card')
             rows = section.css('.md-table-row')
 
             for card in cards:
                 person = PersonItem()
+                person['section'] = title_section
                 person['name'] = card.css('.meta-title-link ::text').get()
                 person['role'] = card.css('.meta-sub::text').get()
                 if not person['role']:
@@ -64,6 +64,7 @@ class AllocineSpider(scrapy.Spider):
 
             for row in rows:
                 person = PersonItem()
+                person['section'] = title_section
                 if title_section == "Acteurs et actrices":
                     person['name'] = row.css('a::text').get()
                     person['role'] = row.css('span::text').get()

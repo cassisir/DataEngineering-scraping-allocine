@@ -16,26 +16,47 @@
             border: 1px solid #ccc;
             padding: 10px;
             margin: 10px;
-            max-width: 200px;  /* Set the maximum width of the card */
-            overflow: hidden; /* Hide overflow content */
+            max-width: 200px;  /* Largeur max des cartes */
+            overflow: hidden; /* Masquer contenu qui dépasse */
             text-align: center;
-        }
-
-        .movie-image {
-            max-width: 100%; /* Set the maximum width of the image to the container width */
-            height: auto;    /* Maintain the image aspect ratio */
         }
 
         .movie-title {
             font-size: 16px;
-            white-space: nowrap; /* Prevent text wrapping */
-            overflow: hidden;    /* Hide overflow text */
-            text-overflow: ellipsis; /* Display ellipsis (...) for overflow text */
+            white-space: nowrap; 
+            overflow: hidden;    
+            text-overflow: ellipsis; /* '...' si texte dépasse */
         }
     </style>
 </head>
 <body>
-    <h1>Movies scraped from Allocine</h1>
+    <h1>Movies</h1>
+
+    <form method="GET" action="{{ url_for('index') }}">
+        <label for="genre-filter">Filter by Genre:</label>
+        <select id="genre-filter" name="genre">
+            <option value="" {% if not selected_genre %}selected{% endif %}>All Genres</option>
+            {% for genre in all_genres %}
+                <option value="{{ genre }}" {% if genre == selected_genre.genre %}selected{% endif %}>{{ genre }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="sort-by">Sort by:</label>
+        <select id="sort-by" name="sort_by">
+            <option value="press_rating" {% if selected_sort_by == 'press_rating' %}selected{% endif %}>Press Rating</option>
+            <option value="spectators_rating" {% if selected_sort_by == 'spectators_rating' %}selected{% endif %}>Spectators Rating</option>
+        </select>
+        <select id="sort-order" name="sort_order">
+            <option value="descending" {% if selected_order == 'descending' %}selected{% endif %}>Descending</option>
+            <option value="ascending" {% if selected_order == 'ascending' %}selected{% endif %}>Ascending</option>
+        </select>
+
+        <label for="exclude-not-rated">Exclude 'Not Rated':</label>
+        <input type="checkbox" id="exclude-not-rated" name="exclude_not_rated" {% if exclude_not_rated %}checked{% endif %}>
+
+        <button type="submit">Apply Filter</button>
+    </form>
+
     <div class="movie-container">
         {% for movie in movies %}
             <a href="{{ url_for('movie', title=movie['title']) }}">
@@ -46,5 +67,7 @@
             </a>
         {% endfor %}
     </div>
+
+
 </body>
 </html>

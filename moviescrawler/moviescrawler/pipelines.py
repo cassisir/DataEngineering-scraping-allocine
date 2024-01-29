@@ -17,7 +17,8 @@ class TextPipeline:
         item['ratings'] = process_ratings(item['ratings'])
         
     # Traitement des dates
-        item['date'] = process_date(item['date'])
+        if 'date' in item:
+            item['date'] = process_date(item['date'])
     
     # Traitement des personnes du casting
         if 'cast' in item:
