@@ -1,48 +1,25 @@
 from flask import Flask, render_template, request
 from pymongo import MongoClient
+from search_and_filter import search_movies, apply_filters
 
 app = Flask(__name__)
 
-# Connexion à MongoDB
 client = MongoClient("mongodb://localhost:27017/")
 db = client.allocine
 collection = db.movie_collection
 
 @app.route('/')
 def index():
-    # Filtre de genre
-    selected_genre = get_genre_filter(request)
-    # Filtre de tri
-    sort_by = request.args.get('sort_by', 'date')
-    if sort_by == 'press_rating':
-        sort_field = 'ratings.press'
-    elif sort_by == 'spectators_rating':
-        sort_field = 'ratings.spectators'
-    else:
-        sort_field = 'date'
-    # Ordre du tri
-    sort_order = request.args.get('sort_order', 'descending')
-    order = 1 if sort_order == 'ascending' else -1
-    # Retire les films non notés si checkbox cochée
-    exclude_not_rated = request.args.get('exclude_not_rated') == 'on'
-    query = selected_genre
-    if exclude_not_rated:
-        query[sort_field] = {'$ne': 'not rated'} # Ajoute la condition pour ne conserver que les films notés
-
-
-    # Recherche par nom de film ou de membre du casting
+    genre_request = request.args.get('genre')
+    sort_by_request = request.args.get('sort_by', 'date')
+    sort_order_request = request.args.get('sort_order', 'descending')
     search_query = request.args.get('search_query', '').strip()
-    if search_query:
-        query['$or'] = [
-            {'title': {'$regex': f'{search_query}', '$options': 'i'}},
-            {'cast.name': {'$regex': f'{search_query}', '$options': 'i'}}
-        ]
+    exclude_not_rated = request.args.get('exclude_not_rated') == 'on'
 
-    # Sélection des films
-    movies = list(collection.find(selected_genre).sort(sort_field, order))
+    movies = apply_filters(collection, genre_request, sort_by_request, sort_order_request, exclude_not_rated, search_query)
 
     all_genres = list(collection.distinct('genre'))
-    return render_template('index.html', movies=movies, all_genres=all_genres, selected_genre=selected_genre, selected_sort_by=sort_by, selected_order=sort_order, exclude_not_rated=exclude_not_rated)
+    return render_template('index.html', movies=movies, all_genres=all_genres, selected_genre=genre_request, selected_sort_by=sort_by_request, selected_order=sort_order_request, exclude_not_rated=exclude_not_rated)
 
 
 @app.route('/movie/<title>')
@@ -50,12 +27,9 @@ def movie(title):
     movie = collection.find_one({'title': title})
     return render_template('movie.html', movie=movie)
 
-
 @app.route('/graphs')
 def graphs():
-
     return render_template('graphs.html')
-
 
 def get_genre_filter(request):
     selected_genre = request.args.get('genre')

@@ -65,6 +65,7 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
    "moviescrawler.pipelines.TextPipeline": 300,
    "moviescrawler.pipelines.MongoDBPipeline": 500,
+   "moviescrawler.pipelines.ElasticsearchPipeline": 800,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

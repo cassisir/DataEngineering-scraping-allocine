@@ -7,7 +7,8 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 from datetime import datetime
-from pymongo import MongoClient, UpdateOne
+from pymongo import MongoClient
+from elasticsearch import Elasticsearch
 
 
 class TextPipeline:
@@ -126,3 +127,24 @@ class MongoDBPipeline(object):
         # Movie collection
         movie_data = dict(item)
         self.db.movie_collection.insert_one(movie_data)
+
+        return item # On retourne l'item pour qu'il puisse ensuite etre traiter par la pipeline elasticsearch
+
+
+# Ajout d'une pipeline Elasticsearch pour la recherche rapide de texte (titre, synopsis, membres du casting)
+class ElasticsearchPipeline(object):
+    def __init__(self):
+        self.es_client = Elasticsearch("http://elasticsearch:9200/")
+        self.index_name = "movies_index"
+        self.doc_type = "movie"
+
+    def process_item(self, item, spider):
+        movie_data = {
+            'title': item['title'],
+            'synopsis': item['synopsis'],
+            'cast': item['cast']
+        }
+
+        movie_id = item['_id']
+
+        self.es_client.index(index=self.index_name, doc_type=self.doc_type, body=movie_data, id=movie_id)

@@ -12,7 +12,7 @@ class AllocineSpider(scrapy.Spider):
     def parse(self, response):
         # Nombre de pages a scraper
         pages_number = int(response.css('.button-md::text').extract()[-1])
-        for page in range(1, 10): # Plus de 117 000 films sur les 7830 pages, on se limite donc à 100 pages par contrainte de temps
+        for page in range(1, 12): # Plus de 117 000 films sur les 7830 pages, on se limite donc à 100 pages par contrainte de temps
             page_url = response.url+"?page="+str(page)
             yield Request(page_url, callback=self.parse_page)
 
@@ -25,6 +25,7 @@ class AllocineSpider(scrapy.Spider):
 
     def parse_movie(self, response):
         movie = MovieItem()
+        movie['_id'] = response.url.split('=')[-1].split('.')[0]
         movie['title'] = response.css(".titlebar-title::text").extract_first()
         movie['image'] = response.css('div.card.entity-card img.thumbnail-img::attr(src)').extract_first()
         movie['synopsis'] = response.css('#synopsis-details .content-txt .bo-p::text').extract()
@@ -54,7 +55,6 @@ class AllocineSpider(scrapy.Spider):
 
             for card in cards:
                 person = PersonItem()
-                person['section'] = title_section
                 person['name'] = card.css('.meta-title-link ::text').get()
                 person['role'] = card.css('.meta-sub::text').get()
                 if not person['role']:
@@ -64,7 +64,6 @@ class AllocineSpider(scrapy.Spider):
 
             for row in rows:
                 person = PersonItem()
-                person['section'] = title_section
                 if title_section == "Acteurs et actrices":
                     person['name'] = row.css('a::text').get()
                     person['role'] = row.css('span::text').get()
