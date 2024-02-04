@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from pymongo import MongoClient
-from search_and_filter import search_movies, apply_filters
+from search_and_filter import apply_filters
 
 app = Flask(__name__)
 
@@ -31,10 +31,6 @@ def movie(title):
 def graphs():
     return render_template('graphs.html')
 
-def get_genre_filter(request):
-    selected_genre = request.args.get('genre')
-    genre_filter = {'genre': selected_genre} if selected_genre else {}
-    return genre_filter
 
 if __name__ == '__main__':
     app.run(debug=True)
