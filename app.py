@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from pymongo import MongoClient
 from search_and_filter import apply_filters
+from graphs import movies_per_genre_graph, mean_ratings_per_genre_graph
 
 app = Flask(__name__)
 
@@ -29,7 +30,12 @@ def movie(title):
 
 @app.route('/graphs')
 def graphs():
-    return render_template('graphs.html')
+    movies_per_genre_fig = movies_per_genre_graph(collection)
+    mean_ratings_per_genre = mean_ratings_per_genre_graph(collection)
+
+    return render_template('graphs.html',
+                           movies_per_genre_fig=movies_per_genre_fig,
+                           mean_ratings_per_genre_fig=mean_ratings_per_genre)
 
 
 if __name__ == '__main__':
