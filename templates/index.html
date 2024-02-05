@@ -67,7 +67,7 @@
 
     <div class="movie-container">
         {% for movie in movies %}
-            <a href="{{ url_for('movie', title=movie['title']) }}">
+            <a href="{{ url_for('movie', movie_id=movie['_id']) }}">
                 <div class="movie-card">
                     <img src="{{ movie['image'] }}" alt="{{ movie['title'] }}" class="movie-image">
                     <h3 class="movie-title">{{ movie['title'] }}</h3>

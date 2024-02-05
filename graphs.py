@@ -66,3 +66,44 @@ def mean_ratings_per_genre_graph(collection):
                 barmode='group')
 
     return fig_ratings_per_genre
+
+
+def mean_ratings_date_graph(collection):
+    """
+    Graphique (line chart) de l'évolution des notes moyennes dans le temps.
+    """
+    # Ne sélectionne que les films notés
+    rated_movies = {
+        "$match": {
+            "ratings.press": {"$exists": True, "$ne": "not rated"},
+            "ratings.spectators": {"$exists": True, "$ne": "not rated"},
+            "date": {"$type": "date"}  # Ne sélectionne que les films avec des dates valides
+        }
+    }
+
+    group_by_date = {
+        "$group": {
+            "_id": {
+                "year": {"$year": "$date"},     # Groupe par année
+                "month": {"$month": "$date"}    # Groupe par mois
+            },
+            "date": {
+                "$first": "$date"      # Récupère une seule occurence de chaque date (car elle est la même pour tous les films groupés)
+            },
+            "mean_press_rating": {"$avg": "$ratings.press"},            # Calcule la moyenne des notes de presse
+            "mean_spectators_rating": {"$avg": "$ratings.spectators"}   # Calcule la moyenne des notes des spectateurs
+        }
+    }
+
+    # Tri par ordre chronologique
+    sort = {"$sort": {"date": 1}}
+
+    # Execute the aggregation pipeline
+    result = list(collection.aggregate([rated_movies, group_by_date, sort]))
+
+    # Création du graphique
+    fig = px.line(result, x="date", y=["mean_press_rating", "mean_spectators_rating"],
+                  labels={'value': 'Note moyenne', 'variable': 'Catégorie note', 'date': 'Mois et année'},
+                  title='Evolution des Notes Moyennes dans le Temps')
+
+    return fig

@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
 from pymongo import MongoClient
 from search_and_filter import apply_filters
-from graphs import movies_per_genre_graph, mean_ratings_per_genre_graph
+from bson import ObjectId
+from graphs import movies_per_genre_graph, mean_ratings_per_genre_graph, mean_ratings_date_graph
 
 app = Flask(__name__)
 
@@ -23,19 +24,21 @@ def index():
     return render_template('index.html', movies=movies, all_genres=all_genres, selected_genre=genre_request, selected_sort_by=sort_by_request, selected_order=sort_order_request, exclude_not_rated=exclude_not_rated)
 
 
-@app.route('/movie/<title>')
-def movie(title):
-    movie = collection.find_one({'title': title})
+@app.route('/movie/<movie_id>')
+def movie(movie_id):
+    movie = collection.find_one({'_id': movie_id})
     return render_template('movie.html', movie=movie)
 
 @app.route('/graphs')
 def graphs():
     movies_per_genre_fig = movies_per_genre_graph(collection)
     mean_ratings_per_genre = mean_ratings_per_genre_graph(collection)
+    mean_ratings_date = mean_ratings_date_graph(collection)
 
     return render_template('graphs.html',
                            movies_per_genre_fig=movies_per_genre_fig,
-                           mean_ratings_per_genre_fig=mean_ratings_per_genre)
+                           mean_ratings_per_genre_fig=mean_ratings_per_genre,
+                           mean_ratings_date_fig=mean_ratings_date)
 
 
 if __name__ == '__main__':

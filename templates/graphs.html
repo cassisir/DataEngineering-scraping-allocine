@@ -21,5 +21,11 @@
         var meanRatingsPerGenreData = {{ mean_ratings_per_genre_fig.to_json() | safe }};
         Plotly.newPlot('meanRatingsPerGenreGraph', meanRatingsPerGenreData, {});
     </script>
+    
+    <div id="meanRatingsPerDateGraph"></div>
+    <script>
+        var meanRatingsPerDateData = {{ mean_ratings_date_fig.to_json() | safe }};
+        Plotly.newPlot('meanRatingsPerDateGraph', meanRatingsPerDateData, {});
+    </script>
 </body>
 </html>
