@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 
-es_client = Elasticsearch()
+es_client = Elasticsearch("http://elasticsearch:9200/")
 index_name = "movies_index"
 doc_type = "movie"
 

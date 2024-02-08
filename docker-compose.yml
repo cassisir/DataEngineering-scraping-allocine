@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+
+
+  scrapy:
+    build:
+      context: ./moviescrawler
+    container_name: scrapy
+    depends_on:
+      - mongo
+      - elasticsearch
+
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    container_name: elasticsearch
+
+
+  flask-api:
+    build:
+      context: ./api
+    container_name: flask_allocine
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+      - elasticsearch
+    

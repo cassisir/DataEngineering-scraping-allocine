@@ -6,7 +6,7 @@ from graphs import movies_per_genre_graph, mean_ratings_per_genre_graph, mean_ra
 
 app = Flask(__name__)
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient('mongo', 27017)
 db = client.allocine
 collection = db.movie_collection
 
@@ -42,4 +42,4 @@ def graphs():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
