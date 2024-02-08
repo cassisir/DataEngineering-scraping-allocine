@@ -20,7 +20,7 @@ def movies_per_genre_graph(collection):
         x=genres, 
         y=counts, 
         labels={'x':'Genre', 'y':'Count'}, 
-        title='Number of Movies per Genre',
+        title='Nombre de Films par Genre',
         text=counts,
         )
     return fig_movies_per_genre

@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ movie['title'] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_movie.css') }}">
 </head>
 <body>
-    <h1>{{ movie['title'] }}</h1>
-    <img src="{{ movie['image'] }}" alt="{{ movie['title'] }}" style="max-width: 300px;">
-    <p><strong>Genres:</strong> {{ ', '.join(movie['genre']) }}</p>
-    <p><strong>Date:</strong> {{ movie['date'].strftime('%d-%B-%Y') }}</p>
-    <p><strong>Press Rating:</strong> {{ movie['ratings']['press'] }}</p>
-    <p><strong>Spectators Rating:</strong> {{ movie['ratings']['spectators'] }}</p>
-    <p><strong>Synopsis:</strong> {{ ' '.join(movie['synopsis']) }}</p>
+    <nav>
+        <ul class="nav-links">
+        <h1>Allocine Scraping</h1>
+            <li><a href="{{ url_for('graphs') }}">Voir Graphiques</a></li>
+            <li><a href="{{ url_for('index') }}">Films</a></li>
+        </ul>
+    <br>
+    <div class="container">
+        <h1>{{ movie['title'] }}</h1>
+        <img src="{{ movie['image'] }}" alt="{{ movie['title'] }}">
+        <p><strong>Genres:</strong> {{ ', '.join(movie['genre']) }}</p>
+        <p><strong>Date:</strong> {{ movie['date'].strftime('%d-%B-%Y') }}</p>
+        <p><strong>Press Rating:</strong> {{ movie['ratings']['press'] }}</p>
+        <p><strong>Spectators Rating:</strong> {{ movie['ratings']['spectators'] }}</p>
+        <p><strong>Synopsis:</strong> {{ ' '.join(movie['synopsis']) }}</p>
 
-    <h2>Cast:</h2>
-    <ul>
-        {% for actor in movie['cast'] %}
-            <li>{{ actor['name'] }} - {{ ', '.join(actor['role']) }}</li>
-        {% endfor %}
-    </ul>
-
-    <a href="{{ url_for('index') }}">Retour aux films</a>
+        <h2>Cast:</h2>
+        <ul class="cast-list">
+            {% for actor in movie['cast'] %}
+            <li><span class="actor-name">{{ actor['name'] }}</span> - {{ ', '.join(actor['role']) }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <a class="button" href="{{ url_for('index') }}">Retour aux films</a>
+    </div>
 </body>
 </html>

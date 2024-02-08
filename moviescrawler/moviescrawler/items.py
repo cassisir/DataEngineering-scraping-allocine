@@ -16,7 +16,7 @@ class MovieItem(scrapy.Item):
     cast = scrapy.Field()
     ratings = scrapy.Field()
 
-class PersonItem(scrapy.Item):
+class PersonItem(scrapy.Item):  # Un item pour chaque membre du casting d'un film
     name = scrapy.Field()
     role = scrapy.Field()
 

@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Graphs</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="/static/styles_graphs.css">
 </head>
 <body>
-    <h1>Movie Graphs</h1>
-
+    <nav>
+        <ul class="nav-links">
+        <h1>Allocine Scraping</h1>
+            <li><a href="{{ url_for('graphs') }}">Voir Graphiques</a></li>
+            <li><a href="{{ url_for('index') }}">Films</a></li>
+        </ul>
+    <br>
     <div id="moviesPerGenreGraph"></div>
     <script>
         var moviesPerGenreData = {{ movies_per_genre_fig.to_json() | safe }};

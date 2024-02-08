@@ -2,7 +2,6 @@ from itemadapter import ItemAdapter
 from datetime import datetime
 from pymongo import MongoClient
 from elasticsearch import Elasticsearch
-import logging
 
 
 class TextPipeline:

@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.nav-links li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.nav-links li:last-child {
+    margin-right: 0;
+}
+
+.nav-links a {
+	color: black;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+.nav-links a:hover {
+    background-color: #77696C;
+    color: white;
+}
+form {
+    text-align: center;
+}
+
+form label,
+form select,
+form input[type="checkbox"],
+form button {
+    display: inline-block;
+    margin-left: 10px;
+}
+.movie-container {
+    background-color: #ffffff; 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.movie-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    max-width: 200px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.movie-image {
+    max-width: 100%;
+    height: auto;  
+}
+
+.movie-title {
+    font-size: 16px;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
