@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movies scraped from Allocine</title>
+    <title>Allocine Scraping</title>
     <link rel="stylesheet" href="/static/styles_index.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
         <input type="text" id="search-query" name="search_query" placeholder="titre, cast ou synopsis">
         <label for="genre-filter">Filtrer par Genre:</label>
         <select id="genre-filter" name="genre">
-            <option value="" {% if not selected_genre %}selected{% endif %}>All Genres</option>
+            <option value="" {% if not selected_genre %}selected{% endif %}>Tous les genres</option>
             {% for genre in all_genres %}
                 <option value="{{ genre }}" {% if genre == selected_genre.genre %}selected{% endif %}>{{ genre }}</option>
             {% endfor %}
@@ -33,8 +33,8 @@
             <option value="date" {% if selected_sort_by == 'date' %}selected{% endif %}>Date</option>
         </select>
         <select id="sort-order" name="sort_order">
-            <option value="descending" {% if selected_order == 'descending' %}selected{% endif %}>Descending</option>
-            <option value="ascending" {% if selected_order == 'ascending' %}selected{% endif %}>Ascending</option>
+            <option value="descending" {% if selected_order == 'descending' %}selected{% endif %}>Décroissant</option>
+            <option value="ascending" {% if selected_order == 'ascending' %}selected{% endif %}>Croissant</option>
         </select>
 
         <label for="exclude-not-rated">Exclure non noté:</label>

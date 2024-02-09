@@ -12,7 +12,7 @@ class AllocineSpider(scrapy.Spider):
     def parse(self, response):
         # Nombre de pages a scraper
         pages_number = int(response.css('.button-md::text').extract()[-1])      # Récupère le nombre de pages
-        for page in range(1, 3):                                               # Plus de 117 000 films sur les 7830 pages, on se limite donc à 200 pages (3000 films) par contrainte de temps
+        for page in range(1, 200):                                              # Plus de 117 000 films sur les 7830 pages, on se limite donc à 200 pages (3000 films) par contrainte de temps
             page_url = response.url+"?page="+str(page)                          # Récupère l'url de la page à parcourir
             yield Request(page_url, callback=self.parse_page)                   # Accède à la page
 

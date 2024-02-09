@@ -10,16 +10,17 @@ def movies_per_genre_graph(collection):
         {"$unwind": "$genre"},
         {"$group": {"_id": "$genre", "count": {"$sum": 1}}}
     ]
-    movies_per_genre = list(collection.aggregate(movies_per_genre_query))
+    movies_per_genre = list(collection.aggregate(movies_per_genre_query))        # Sélection des films correspondant à la requête
     sorted_movies_per_genre = sorted(movies_per_genre, key=lambda x: x['count']) # Genres ordonnés pour une visualisation plus claire
 
-    genres = [genre["_id"] for genre in sorted_movies_per_genre]
-    counts = [genre["count"] for genre in sorted_movies_per_genre]
-
+    genres = [genre["_id"] for genre in sorted_movies_per_genre]        # Récupère un id par genre
+    counts = [genre["count"] for genre in sorted_movies_per_genre]      # Récupère les nombre de films pour chaque genre
+    
+    # Création du graphique
     fig_movies_per_genre = px.bar(
         x=genres, 
         y=counts, 
-        labels={'x':'Genre', 'y':'Count'}, 
+        labels={'x':'Genre', 'y':'Nombre de films'}, 
         title='Nombre de Films par Genre',
         text=counts,
         )
@@ -36,10 +37,10 @@ def mean_ratings_per_genre_graph(collection):
     mean_press_ratings_query = [
         {"$match": {"ratings.press": {"$exists": True, "$ne": "not rated"}}},  # Ne sélectionne pas les films non notés
         {"$unwind": "$genre"},
-        {"$group": {"_id": "$genre", "mean_press_rating": {"$avg": {"$toDouble": "$ratings.press"}}}}
+        {"$group": {"_id": "$genre", "mean_press_rating": {"$avg": {"$toDouble": "$ratings.press"}}}}  # Regroupe les films par genre et calcule leurs moyennes
     ]
 
-    result_press = list(collection.aggregate(mean_press_ratings_query))
+    result_press = list(collection.aggregate(mean_press_ratings_query))  # Sélection des films correspondant à la requête
 
     # Extraction des genres et de leur moyenne selon la press
     genres_press = [genre["_id"] for genre in result_press]
@@ -49,9 +50,9 @@ def mean_ratings_per_genre_graph(collection):
     mean_spectators_ratings_query = [
         {"$match": {"ratings.spectators": {"$exists": True, "$ne": "not rated"}}},  # Ne sélectionne pas les films non notés
         {"$unwind": "$genre"},
-        {"$group": {"_id": "$genre", "mean_spectators_ratings": {"$avg": {"$toDouble": "$ratings.spectators"}}}}
+        {"$group": {"_id": "$genre", "mean_spectators_ratings": {"$avg": {"$toDouble": "$ratings.spectators"}}}}  # Regroupe les films par genre et calcule leurs moyennes
     ]
-    result_spectators = list(collection.aggregate(mean_spectators_ratings_query))
+    result_spectators = list(collection.aggregate(mean_spectators_ratings_query))  # Sélection des films correspondant à la requête
 
     # Extraction des genres et de leur moyenne selon les spectateurs
     genres_spectators = [genre["_id"] for genre in result_spectators]
@@ -98,7 +99,7 @@ def mean_ratings_date_graph(collection):
     # Tri par ordre chronologique
     sort = {"$sort": {"date": 1}}
 
-    # Execute the aggregation pipeline
+    # Sélection des films correspondant à la requête
     result = list(collection.aggregate([rated_movies, group_by_date, sort]))
 
     # Création du graphique

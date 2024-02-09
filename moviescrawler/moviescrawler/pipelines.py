@@ -44,7 +44,7 @@ class TextPipeline:
     def process_date(self, date):
         date = date.strip() # Retire les '\n'
 
-        month = date.split(' ')[1] # Convertit le mois en toutes lettres FR en nombre
+        month = date.split(' ')[1] # Convertit le mois en nombre
         if month=="janvier":
             month='1'
         elif month=="février":
@@ -86,7 +86,7 @@ class TextPipeline:
     def process_cast(self, cast):
         # Ne conserve pas les personnes qui ont un rôle mais pas de nom (Erreur d'affichage sur le site affichant le role en doublon)
         cast = [person for person in cast if person['name'] is not None]
-        # Dictionnaire pour stocker les différents roles d'une personne
+        # Dictionnaire pour stocker les différents roles d'une personne (Un membre du casting peut avoir plusieurs rôles. Exemple : Réalisateur et Acteur)
         person_roles_dict = {}
 
         for person in cast:
@@ -138,6 +138,6 @@ class ElasticsearchPipeline(object):
             'cast': item['cast']
         }
 
-        movie_id = item['_id']
+        movie_id = item['_id']      # L'id du film est le même dans elasticsearch et mongo. Cela permettra de croiser les informations
 
         self.es_client.index(index=self.index_name, doc_type=self.doc_type, body=movie_data, id=movie_id)
