@@ -9,6 +9,7 @@ L'objectif de ce projet est de récupérer tous les films présent sur le site A
 
 ## Architecture du projet :
 
+
 ### Docker
 Le projet est séparé en **4 conteneurs**, orchestrés par **Docker Compose** qui permet de gérer plusieurs conteneurs dans le même contexte. Le fichier de configuration docker-compose.yml définit l'ensemble des conteneurs à instancier, les ports à mapper, ainsi que l'ordre dans lequel démarrer les services.
 Ainsi, le projet peut être déployé sur n'importe quelle machine disposant de Docker et Docker-compose. 
@@ -17,7 +18,7 @@ Ainsi, le projet peut être déployé sur n'importe quelle machine disposant de 
 
 <img src="images/docker_schema.png" width="600" style="margin-bottom: 20px;">
 
-#### 1. Scrapy :
+### 1. Scrapy :
 Scrapy est un framework python dédié au web scraping. Il permet de crawler des sites web et d'en extraire les données de façon structurée.
 - **Spiders :**
 Scrapy utilise des class, nommées Spider, qui définissent où démarrer le scraping et quels éléments extraire. Dans notre projet, nous utilisons une spider nommé allocine 
@@ -37,13 +38,13 @@ Nous utilisons 3 pipelines :
 
 > Un dockerfile a été créé pour la création du conteneur.
 
-#### 2. MongoDB :
+### 2. MongoDB :
 MongoDB est une base de données NoSQL open-source permettant de stocker les données sous forme de document au format JSON. L'un de ses principaux avantages est l'optimisation de la mémoire.
 Tous les films scrapés sont chargés dans une base de données MongoDB qui sera accessible depuis l'api.
 
 >L'image docker officiel est utilisé pour la création de son conteneur.
 
-#### 3. Elasticsearch :
+### 3. Elasticsearch :
 Elasticsearch est un moteur de recherche en temps réel. Il est conçu pour offrir des recherches rapides sur de grandes quantités de données, notamment textuelles.
 Dans notre projet, nous indexons dans elasticsearch tous les champs textuels des films (titre, synopsis, cast) ainsi que leur identifiant.
 Cela permet la recherche rapide d'un film à partir de texte. Après une recherche, elasticsearch retourne tous les films contenant les mots saisis dans leur titre,casting ou synopsis.
@@ -51,7 +52,7 @@ Les identifiants de ces films sont utilisés pour récupérer leurs informations
 
 >L'image docker officiel est utilisé pour la création de son conteneur.
 
-#### 4. Flask :
+### 4. Flask :
 Flask est un framework web léger et flexible open source pour python. Il est conçu pour faciliter le développement d'applications web, tout en offrant les outils nécessaires pour développer des applications complexes.
 L'application web de notre projet a été conçu avec Flask. Elle contient 3 templates de pages :
 - index.html : Page principal affichant tous les films et des possibilités de recherche et filtrage.
@@ -63,7 +64,7 @@ L'application est lié à MongoDB et Elasticsearch afin d'accéder aux données 
 > Un dockerfile a été créé pour la création du conteneur.
 
 ### Structure des fichiers
-##### Voici le schéma de la structure du projet :
+**Voici le schéma de la structure du projet :**
 <img src="images/structure_projet.png" width="1000">
 
 
