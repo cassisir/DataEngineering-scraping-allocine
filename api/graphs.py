@@ -63,7 +63,7 @@ def mean_ratings_per_genre_graph(collection):
                 y=mean_press_ratings + mean_spectators_ratings,
                 color=['Press'] * len(genres_press) + ['Spectators'] * len(genres_spectators),
                 labels={'y': 'Note moyenne', 'x': 'Genre', 'color': 'Catégorie note'},
-                title='Note moyenne par genre : Press vs Spectators',
+                title='Notes moyennes par genre : Press vs Spectators',
                 barmode='group')
 
     return fig_ratings_per_genre
