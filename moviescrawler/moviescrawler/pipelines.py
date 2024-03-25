@@ -121,7 +121,7 @@ class MongoDBPipeline(object):
         movie_data = dict(item)                             # Convertit l'item en dictionnaire
         self.db.movie_collection.insert_one(movie_data)     # Charge le film dans la base de données
 
-        return item                                         # On retourne l'item pour qu'il puisse ensuite etre traiter par la pipeline elasticsearch
+        return item                                         # On retourne l'item pour qu'il puisse ensuite etre traité par la pipeline elasticsearch
 
 
 # Ajout d'une pipeline Elasticsearch pour la recherche rapide de texte (titre, synopsis, membres du casting)
